@@ -28,6 +28,29 @@ export default function App() {
   // 1. Dual Mode & Shell UI State
   const [editMode, setEditMode] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeInstall = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallBtn(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setShowInstallBtn(false);
+    }
+    setDeferredPrompt(null);
+  };
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [activeSettingsTab, setActiveSettingsTab] = useState('background');
@@ -566,9 +589,17 @@ useEffect(() => {
           {editMode ? 'Edit Mode' : focusMode ? 'DEEP FOCUS' : 'Focus Mode'}
         </span>
       </button>
-          <button 
-            onClick={() => setEditMode(prev => !prev)}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all ${
+          {showInstallBtn && (
+          <button
+            onClick={handleInstallClick}
+            className="px-3 py-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-semibold rounded-full shadow-lg hover:scale-105 transition-all flex items-center gap-1.5 cursor-pointer"
+          >
+            ⬇ Install App
+          </button>
+        )}
+
+        <button
+          onClick={() => setEditMode(prev => !prev)}
               editMode 
                 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' 
                 : 'text-white/70 hover:text-white hover:bg-white/10'
