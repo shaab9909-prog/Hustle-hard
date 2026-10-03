@@ -352,10 +352,10 @@ export default function App() {
 
   // 5. Daily Goals Widget State
   const [goalsWidget, setGoalsWidget] = useState(() => {
-    const saved = localStorage.getItem('zenith_goals_widget');
+    const saved = localStorage.getItem('zenith_goals_widget_v2');
     return saved ? JSON.parse(saved) : {
     x: 30,
-      y: 520,
+      y: 640,
       width: 360,
       height: 380,
       bgOpacity: 0.4,
@@ -369,7 +369,7 @@ export default function App() {
   });
 
   useEffect(() => {
-    localStorage.setItem('zenith_goals_widget', JSON.stringify(goalsWidget));
+    localStorage.setItem('zenith_goals_widget_v2', JSON.stringify(goalsWidget));
   }, [goalsWidget]);
   // Daily 3:00 AM Reset for Tasks
   useEffect(() => {
