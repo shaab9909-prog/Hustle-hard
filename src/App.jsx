@@ -586,41 +586,39 @@ useEffect(() => {
               : 'bg-emerald-400 animate-pulse'
         }`} />
         <span className="font-syne text-xs uppercase tracking-widest font-bold">
-          {editMode ? 'Edit Mode' : focusMode ? 'DEEP FOCUS' : 'Focus Mode'}
-        </span>
-</button>
-
-<button
-  onClick={handleInstallClick}
-  className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white text-xs font-bold rounded-full shadow-lg hover:scale-105 transition-all flex items-center gap-1.5 cursor-pointer border border-emerald-400/30"
-  title="Install App on Desktop"
->
-  ⬇ Install App
-</button>
-
-<button
-          onClick={() => setEditMode(prev => !prev)}
-              editMode 
-                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' 
-                : 'text-white/70 hover:text-white hover:bg-white/10'
-            }`}
-            title="Toggle Edit Mode (Press 'E')"
-          >
-            <Edit3 className="w-3.5 h-3.5" />
-            <span>{editMode ? 'Lock Canvas' : 'Customize'}</span>
-            <kbd className="text-[10px] bg-black/40 px-1 rounded text-white/50">E</kbd>
-          </button>
-
-          {editMode && (
-            <button
-              onClick={handleAddQuote}
-              className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium text-sky-400 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 transition-all"
-              title="Add new draggable quote block"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>New Note</span>
+                {editMode ? 'Edit Mode' : focusMode ? 'DEEP FOCUS' : 'Focus Mode'}
+              </span>
             </button>
-          )}
+
+            <button
+              onClick={handleInstallClick}
+              className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white text-xs font-bold rounded-full shadow-lg hover:scale-105 transition-all flex items-center gap-1.5 cursor-pointer border border-emerald-400/30"
+              title="Install App on Desktop"
+            >
+              ⬇ Install App
+            </button>
+
+            <button
+              onClick={() => setEditMode(prev => !prev)}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                editMode
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                  : 'text-white/70 hover:text-white hover:bg-white/10'
+              }`}
+              title="Toggle Edit Mode (Press 'E')"
+            >
+              <Edit3 className="w-3.5 h-3.5" />
+              <span>{editMode ? 'Done' : 'Customize'}</span>
+            </button>
+
+<button
+  onClick={handleAddQuote}
+  className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium text-sky-400 bg-sky-500/10 hover:bg-sky-500/20"
+  title="Add new draggable quote block"
+>
+  <Plus className="w-3.5 h-3.5" />
+  <span>New Note</span>
+</button>
 
           <div className="flex items-center gap-1 px-2 border-l border-white/10">
             <button
