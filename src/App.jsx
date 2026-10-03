@@ -351,22 +351,26 @@ export default function App() {
   }, [clockWidget.stopwatchRunning]);
 
   // 5. Daily Goals Widget State
-  const [goalsWidget, setGoalsWidget] = useState(() => {
-    const saved = localStorage.getItem('zenith_goals_widget_v2');
-    return saved ? JSON.parse(saved) : {
-    x: 30,
-      y: 640,
-      width: 360,
-      height: 380,
-      bgOpacity: 0.4,
-      textColor: '#ffffff',
-      tasks: [
-        { id: '1', text: 'Physics: Solve 40 Electrostatics MCQs', completed: true, tag: 'Physics' },
-        { id: '2', text: 'Chemistry: Memorize Aldehydes Mechanisms', completed: false, tag: 'Organic' },
-        { id: '3', text: 'Complete Mock Test Analysis (1h)', completed: false, tag: 'Revision' }
-      ]
-    };
-  });
+const [goalsWidget, setGoalsWidget] = useState(() => {
+  const saved = localStorage.getItem('zenith_goals_widget_v4');
+  return saved ? JSON.parse(saved) : {
+    x: window.innerWidth > 1400 ? window.innerWidth - 440 : 1050,
+    y: 240,
+    width: 360,
+    height: 380,
+    bgOpacity: 0.4,
+    textColor: '#ffffff',
+    tasks: [
+      { id: '1', text: 'Physics: Solve 40 Electrostatics MCQs', completed: true, tag: 'Physics' },
+      { id: '2', text: 'Chemistry: Memorize Aldehydes Mechanisms', completed: false, tag: 'Organic' },
+      { id: '3', text: 'Complete Mock Test Analysis (1h)', completed: false, tag: 'Revision' }
+    ]
+  };
+});
+
+useEffect(() => {
+  localStorage.setItem('zenith_goals_widget_v4', JSON.stringify(goalsWidget));
+}, [goalsWidget]);
 
   useEffect(() => {
     localStorage.setItem('zenith_goals_widget_v2', JSON.stringify(goalsWidget));
