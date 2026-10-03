@@ -42,14 +42,18 @@ export default function App() {
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
   }, []);
 
+  const [showInstallGuide, setShowInstallGuide] = useState(false);
+
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setShowInstallBtn(false);
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    } else {
+      setShowInstallGuide(true);
     }
-    setDeferredPrompt(null);
   };
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -949,6 +953,36 @@ useEffect(() => {
                 ))
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {showInstallGuide && (
+        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#121218] border border-white/10 rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl relative">
+            <button 
+              onClick={() => setShowInstallGuide(false)}
+              className="absolute top-4 right-4 text-white/50 hover:text-white text-lg font-bold cursor-pointer"
+            >
+              ✕
+            </button>
+            <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+              ⬇
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">Install Hustle Hard</h3>
+            <p className="text-xs text-white/70 mb-4 leading-relaxed">
+              App ko apne device par direct install karne ke liye:
+            </p>
+            <div className="bg-white/5 border border-white/10 rounded-xl p-3 text-left text-xs text-white/80 space-y-2 mb-4">
+              <p>💻 <b>Desktop:</b> Address bar mein <b>Install (monitor icon)</b> par click karein, ya Chrome ke 3-dots (⋮) ➔ <b>Install page as app</b>.</p>
+              <p>📱 <b>Mobile:</b> Chrome 3-dots (⋮) ➔ <b>Add to Home Screen</b>.</p>
+            </div>
+            <button
+              onClick={() => setShowInstallGuide(false)}
+              className="w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl text-xs transition-all cursor-pointer"
+            >
+              Got it!
+            </button>
           </div>
         </div>
       )}
