@@ -594,13 +594,14 @@ useEffect(() => {
               </span>
             </button>
 
-            <button
-              onClick={handleInstallClick}
-              className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white text-xs font-bold rounded-full shadow-lg hover:scale-105 transition-all flex items-center gap-1.5 cursor-pointer border border-emerald-400/30"
-              title="Install App on Desktop"
-            >
-              ⬇ Install App
-            </button>
+            <a
+  href="https://github.com/shaab9909-prog/Hustle-hard/releases/download/v1.0.0/hustle-hard_0.1.0_x64-setup.exe"
+  download
+  className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white text-xs font-bold rounded-full shadow-lg hover:scale-105 transition-all flex items-center gap-1.5 cursor-pointer border border-emerald-400/30 no-underline"
+  title="Download Hustle Hard Setup (.exe)"
+>
+  ⬇ Download for Windows
+</a>
 
             <button
               onClick={() => setEditMode(prev => !prev)}
