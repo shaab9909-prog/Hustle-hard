@@ -30,6 +30,7 @@ export default function App() {
   const [controlsVisible, setControlsVisible] = useState(true);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
+  const isDesktopApp = typeof window !== 'undefined' && Boolean(window.__TAURI_INTERNALS__);
 
   useEffect(() => {
     const handleBeforeInstall = (e) => {
@@ -593,7 +594,7 @@ useEffect(() => {
                 {editMode ? 'Edit Mode' : focusMode ? 'DEEP FOCUS' : 'Focus Mode'}
               </span>
             </button>
-
+        {!isDesktopApp && (
             <a
   href="https://github.com/shaab9909-prog/Hustle-hard/releases/download/v1.0.0/hustle-hard_0.1.0_x64-setup.exe"
   download
@@ -602,6 +603,7 @@ useEffect(() => {
 >
   ⬇ Download for Windows
 </a>
+)}
 
             <button
               onClick={() => setEditMode(prev => !prev)}
