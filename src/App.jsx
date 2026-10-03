@@ -588,17 +588,17 @@ useEffect(() => {
         <span className="font-syne text-xs uppercase tracking-widest font-bold">
           {editMode ? 'Edit Mode' : focusMode ? 'DEEP FOCUS' : 'Focus Mode'}
         </span>
-      </button>
-          {showInstallBtn && (
-          <button
-            onClick={handleInstallClick}
-            className="px-3 py-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-semibold rounded-full shadow-lg hover:scale-105 transition-all flex items-center gap-1.5 cursor-pointer"
-          >
-            ⬇ Install App
-          </button>
-        )}
+</button>
 
-        <button
+<button
+  onClick={handleInstallClick}
+  className="px-3.5 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white text-xs font-bold rounded-full shadow-lg hover:scale-105 transition-all flex items-center gap-1.5 cursor-pointer border border-emerald-400/30"
+  title="Install App on Desktop"
+>
+  ⬇ Install App
+</button>
+
+<button
           onClick={() => setEditMode(prev => !prev)}
               editMode 
                 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' 
