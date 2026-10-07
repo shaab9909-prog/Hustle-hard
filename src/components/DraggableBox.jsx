@@ -17,37 +17,34 @@ export default function DraggableBox({
   const dragStartRef = useRef({ startX: 0, startY: 0, initialX: 0, initialY: 0 });
   const resizeStartRef = useRef({ startX: 0, startY: 0, initialW: 0, initialH: 0 });
 
-  const handlePointerDownDrag = (e) => {
-    if (!editMode && !e.target.closest('[data-drag-handle]')) return;
+  const handlePointerDownDrag = (e) => {console.log("--> DRAG CLICK EVENT FIRED!", e);
+    if (!editMode) return;
     if (e.target.closest('button') || e.target.closest('input') || e.target.closest('textarea')) return;
 
     e.preventDefault();
     e.stopPropagation();
-    setIsDragging(true);
 
-    dragStartRef.current = {
-      startX: e.clientX,
-      startY: e.clientY,
-      initialX: x,
-      initialY: y
-    };
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const initialX = x;
+    const initialY = y;
 
-    const handlePointerMove = (moveEvt) => {
-      const deltaX = moveEvt.clientX - dragStartRef.current.startX;
-      const deltaY = moveEvt.clientY - dragStartRef.current.startY;
-      const newX = Math.max(0, Math.min(window.innerWidth - width, dragStartRef.current.initialX + deltaX));
-      const newY = Math.max(0, Math.min(window.innerHeight - height, dragStartRef.current.initialY + deltaY));
+    const onPointerMove = (moveEvt) => {
+      moveEvt.preventDefault();
+      const deltaX = moveEvt.clientX - startX;
+      const deltaY = moveEvt.clientY - startY;
+      const newX = Math.max(0, Math.min(window.innerWidth - width, initialX + deltaX));
+      const newY = Math.max(0, Math.min(window.innerHeight - height, initialY + deltaY));
       onUpdate({ x: newX, y: newY });
     };
 
-    const handlePointerUp = () => {
-      setIsDragging(false);
-      window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('pointerup', handlePointerUp);
+    const onPointerUp = () => {
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
     };
 
-    window.addEventListener('pointermove', handlePointerMove);
-    window.addEventListener('pointerup', handlePointerUp);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
   };
 
   const handlePointerDownResize = (e) => {
@@ -82,29 +79,31 @@ export default function DraggableBox({
 
   return (
     <div
-      onPointerDown={handlePointerDownDrag}
-      className={`absolute transition-shadow duration-200 group ${
-        editMode 
-          ? 'cursor-grab active:cursor-grabbing border-2 border-dashed border-sky-400/70 hover:border-sky-300 ring-2 ring-sky-400/20 rounded-2xl shadow-2xl z-30' 
+      className={`absolute select-none ${
+        editMode
+          ? 'border-2 border-dashed border-sky-400/70 hover:border-sky-300 ring-2 ring-sky-400/20 rounded-2xl z-30'
           : 'z-20'
       }`}
       style={{
-        transform: `translate3d(${x}px, ${y}px, 0)`,
+        transform: `translate3d(${x || 0}px, ${y || 0}px, 0)`,
         width: `${width}px`,
         height: `${height}px`,
         touchAction: 'none'
       }}
     >
       {editMode && (
-        <div className="absolute -top-3.5 left-3 px-2 py-0.5 rounded-full bg-sky-500 text-black text-[10px] font-bold tracking-wider uppercase shadow-md pointer-events-none flex items-center gap-1">
+        <div
+          onPointerDown={handlePointerDownDrag}
+          className="absolute -top-3.5 left-3 px-2 py-0.5 rounded-full bg-sky-500 text-black text-[10px] font-bold tracking-wider uppercase flex items-center gap-1 cursor-grab active:cursor-grabbing z-50 select-none shadow-md"
+        >
           <Move className="w-2.5 h-2.5" />
           <span>Drag</span>
         </div>
       )}
 
       <div className="w-full h-full">
-        {children}
-      </div>
+  {children}
+</div>
 
       {editMode && (
         <div 

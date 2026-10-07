@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">hustle-hard</string>
+    <string name="title_activity_main">hustle-hard</string>
+    <string name="package_name">com.shaab.hustlehard</string>
+    <string name="custom_url_scheme">com.shaab.hustlehard</string>
+</resources>

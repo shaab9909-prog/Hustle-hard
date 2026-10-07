@@ -423,7 +423,21 @@ useEffect(() => {
   // 6. Freeform Quotes List State
   const [quotesList, setQuotesList] = useState(() => {
     const saved = localStorage.getItem('zenith_quotes_list');
-    return saved ? JSON.parse(saved) : [
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      return parsed.map(q => ({
+        ...q,
+        x: typeof q.x === 'number' && !isNaN(q.x) ? q.x : 300,
+        y: typeof q.y === 'number' && !isNaN(q.y) ? q.y : 200,
+        width: q.width || 380,
+        height: q.height || 180,
+      }));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  return [
       {
         id: 'quote-1',
         x: 880,
@@ -515,19 +529,21 @@ useEffect(() => {
     setGoalsWidget(prev => ({ ...prev, ...newPos }));
   };
   const updateQuotePos = (id, newPos) => {
-    setQuotesList(prev => prev.map(q => q.id === id ? { ...q, ...newPos } : q));
-  };
+  setQuotesList(prev => prev.map(q => String(q.id) === String(id) ? { ...q, ...newPos } : q));
+};
 
   const handleAddQuote = () => {
-    const randomText = CURATED_QUOTES[Math.floor(Math.random() * CURATED_QUOTES.length)];
+    const randomText = CURATED_QUOTES?.[Math.floor(Math.random() * CURATED_QUOTES.length)] || "Every master was once a disaster.";
     const newQuote = {
-      id: Date.now(),
+      id: String(Date.now()),
       text: randomText,
-      x: 100,
-      y: 200,
-      color: '#00F2FE', // Default neon cyan/teal ya jo color chahiye
+      x: Math.max(50, Math.floor(window.innerWidth / 2 - 140)),
+      y: Math.max(50, Math.floor(window.innerHeight / 2 - 70)),
+      width: 280,
+      height: 140,
+      color: '#00F2FE',
     };
-    setQuotesList(prev => [...prev, newQuote]);
+    setQuotesList(prev => [...(Array.isArray(prev) ? prev : []), newQuote]);
   };
 
   const handleDeleteQuote = (id) => {
