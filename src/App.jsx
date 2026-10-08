@@ -42,6 +42,7 @@ export default function App() {
     window.addEventListener('beforeinstallprompt', handleBeforeInstall);
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
   }, []);
+  
 
   const [showInstallGuide, setShowInstallGuide] = useState(false);
 
