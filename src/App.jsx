@@ -25,6 +25,32 @@ import GroupStudyWidget from './components/GroupStudyWidget';
 import SettingsDrawer from './components/SettingsDrawer';
 const DEFAULT_WARNINGS = [];
 export default function App() {
+  // Anti-Minimize / Gesture Protection Lock
+  useEffect(() => {
+    let unlisten;
+    async function setupLock() {
+      if (window.__TAURI__) {
+        try {
+          const { appWindow } = await import('@tauri-apps/api/window');
+          
+          unlisten = await appWindow.onResized(async () => {
+            const isMin = await appWindow.isMinimized();
+            if (isMin) {
+              await appWindow.unminimize();
+              await appWindow.setFullscreen(true);
+              await appWindow.setFocus();
+            }
+          });
+        } catch (e) {
+          console.error("Window lock error:", e);
+        }
+      }
+    }
+    setupLock();
+    return () => {
+      if (unlisten) unlisten();
+    };
+  }, []);
   // 1. Dual Mode & Shell UI State
   const [editMode, setEditMode] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
@@ -260,16 +286,8 @@ export default function App() {
 
     
 
-  // Fullscreen Toggle
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
-      }
-    }
-  };
+  // Fullscreen Exit Disabled (Always Locked)
+  const toggleFullscreen = () => {};
 
     
 
@@ -662,13 +680,13 @@ useEffect(() => {
             <SettingsIcon className="w-3.5 h-3.5" />
           </button>
 
-          <button 
-            onClick={toggleFullscreen}
-            className="p-1.5 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all"
-            title="Fullscreen (F)"
-          >
-            {isFullscreen ? <Minimize className="w-3.5 h-3.5" /> : <Maximize className="w-3.5 h-3.5" />}
-          </button>
+          <button
+  onClick={toggleFullscreen}
+  className="p-1.5 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-all"
+  title="Fullscreen (F)"
+>
+  {isFullscreen ? <Minimize className="w-3.5 h-3.5" /> : <Maximize className="w-3.5 h-3.5" />}
+</button>
 
           <button 
             onClick={triggerExitProtection}

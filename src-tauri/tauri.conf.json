@@ -11,16 +11,15 @@
   },
   "app": {
   "windows": [
-      {
-        "title": "Zenith Study",
-        "fullscreen": true,
-        "resizable": false,
-        "decorations": false,
-        "alwaysOnTop": true,
-        "center": true,
-        "skipTaskbar": false
-      }
-    ],
+        {
+          "title": "Hustle Hard",
+          "fullscreen": true,
+          "resizable": false,
+          "decorations": false,
+          "alwaysOnTop": true
+        }
+      ],
+
     "security": {
       "csp": null
     }
